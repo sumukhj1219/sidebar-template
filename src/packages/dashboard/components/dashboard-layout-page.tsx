@@ -3,8 +3,8 @@ import React, { useState } from "react"
 import { LeftSidebar } from "@/components/sidebar/left/left-sidebar"
 import { RightSidebar } from "@/components/sidebar/right/right-sidebar"
 import DashboardMain from "./dashboard-main"
-import { useIsMobile } from "@/hooks/use-mobile"
 import { useSidebar } from "@/components/sidebar/sidebar-context"
+import { useDevice } from "@/hooks/use-device"
 
 interface DashboardLayoutPageProps {
     children: React.ReactNode
@@ -12,12 +12,12 @@ interface DashboardLayoutPageProps {
 
 const DashboardLayoutPage = ({ children }: DashboardLayoutPageProps) => {
     const {leftOpen, setLeftOpen, rightOpen, setRightOpen} = useSidebar()
-    const isMobile = useIsMobile()
-
+    const device = useDevice()
+    
     return (
             <div className="flex h-screen w-full overflow-hidden relative">
                 <LeftSidebar/>
-                {isMobile && (leftOpen || rightOpen) && (
+                {device === "mobile" && (leftOpen || rightOpen) && (
                     <div
                         className="fixed inset-0 bg-black/40 z-20"
                         onClick={() => {

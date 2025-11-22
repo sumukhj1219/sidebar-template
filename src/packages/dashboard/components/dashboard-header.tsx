@@ -14,10 +14,12 @@ import { useSidebar } from "@/components/sidebar/sidebar-context"
 import { useCurrentPath } from "@/hooks/use-currentPath"
 import Searchbar from "./search-bar";
 import { ThemeToggle } from "@/components/common/theme-toggle";
+import { useDevice } from "@/hooks/use-device";
 
 const DashboardHeader = () => {
     const { leftOpen, setLeftOpen, rightOpen, setRightOpen } = useSidebar()
     const currentPath = useCurrentPath()
+    const device = useDevice()
 
     return (
         <header className="flex items-center justify-between h-16  px-4 gap-2 shrink-0 border-b">
@@ -37,7 +39,7 @@ const DashboardHeader = () => {
                     <PiStarDuotone />
                 </Button>
                 <Breadcrumb className="md:block hidden">
-                    <BreadcrumbList>
+                    <BreadcrumbList className={`${device === "tablet"  && "hidden"}`}>
                         <BreadcrumbItem>
                             <BreadcrumbLink href="#" className="hover:bg-secondary p-1">{currentPath}</BreadcrumbLink>
                         </BreadcrumbItem>
@@ -50,7 +52,7 @@ const DashboardHeader = () => {
             </div>
 
             <div className="flex items-center justify-center gap-x-3">
-                <Searchbar />
+                <Searchbar  />
                 <ThemeToggle />
                 <Button
                     size={"icon-lg"}

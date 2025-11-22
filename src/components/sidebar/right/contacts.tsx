@@ -47,7 +47,7 @@ const Contacts = () => {
                                 <AvatarFallback>U</AvatarFallback>
                             </Avatar>
                             <span className='flex flex-col'>
-                                <span className='text-sm'>{d.name}</span>
+                                <span className='md:text-sm text-xs'>{d.name}</span>
                             </span>
                         </div>
                     ))

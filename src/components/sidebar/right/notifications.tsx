@@ -44,8 +44,8 @@ const Notifications = () => {
                         <div className='flex items-center gap-x-3' key={d.id}>
                             <span className='p-1 rounded-sm bg-sky-100 text-primary dark:text-secondary text-xs'>{d.icon}</span>
                             <span className='flex flex-col'>
-                                <span className='text-sm'>{d.title}</span>
-                                <span className='text-xs text-muted-foreground'>{d.time}</span>
+                                <span className='md:text-sm text-xs overflow-hidden text-ellipsis'>{d.title}</span>
+                                <span className='md:text-xs text-xs text-muted-foreground'>{d.time}</span>
                             </span>
                         </div>
                     ))
