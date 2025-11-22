@@ -23,7 +23,7 @@ export const LeftSidebar = () => {
       <SidebarHeader>
         <UserProfile />
       </SidebarHeader>
-      <SidebarContent className="flex flex-col md:gap-y-10">
+      <SidebarContent className="flex flex-col gap-y-10">
         <SubHeader />
         <NavMain />
       </SidebarContent>

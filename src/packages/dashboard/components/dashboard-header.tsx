@@ -32,10 +32,11 @@ const DashboardHeader = () => {
                 <Button
                     size={"icon-lg"}
                     variant={"ghost"}
+                    className="md:block hidden"
                 >
                     <PiStarDuotone />
                 </Button>
-                <Breadcrumb>
+                <Breadcrumb className="md:block hidden">
                     <BreadcrumbList>
                         <BreadcrumbItem>
                             <BreadcrumbLink href="#" className="hover:bg-secondary p-1">{currentPath}</BreadcrumbLink>

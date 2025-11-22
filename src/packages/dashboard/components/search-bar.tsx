@@ -4,7 +4,7 @@ import React from 'react'
 
 const Searchbar = () => {
     return (
-        <div className="relative w-full max-w-sm">
+        <div className="relative w-full max-w-sm md:block hidden">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
             <Input
                 className="pl-10 bg-secondary"
