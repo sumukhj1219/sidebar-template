@@ -3,18 +3,15 @@ import { cn } from "@/lib/utils"
 import  { ReactNode } from "react"
 
 interface SidebarProps {
-    open: boolean
     className?: string
     children?: ReactNode
 }
 
-export const Sidebar = ({ open, className, children }: SidebarProps) => {
+export const Sidebar = ({ className, children }: SidebarProps) => {
     return (
         <aside
-            data-state={open ? "open" : "closed"}
             className={cn(
-                "flex-shrink-0 flex flex-col bg-sidebar border-r overflow-hidden transition-all duration-300",
-                open ? "md:w-72 w-3/4" : "md:w-16 w-0",
+                "flex-shrink-0 flex flex-col bg-sidebar overflow-hidden transition-all duration-300",
                 className
             )}
         >

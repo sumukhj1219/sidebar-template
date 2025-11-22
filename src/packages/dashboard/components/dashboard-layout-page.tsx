@@ -16,14 +16,7 @@ const DashboardLayoutPage = ({ children }: DashboardLayoutPageProps) => {
 
     return (
             <div className="flex h-screen w-full overflow-hidden relative">
-                <LeftSidebar
-                    open={leftOpen}
-                    className={
-                        isMobile
-                            ? "fixed top-0 left-0 h-full z-30 transition-all duration-300"
-                            : "flex-shrink-0 transition-all duration-300"
-                    }
-                />
+                <LeftSidebar/>
                 {isMobile && (leftOpen || rightOpen) && (
                     <div
                         className="fixed inset-0 bg-black/40 z-20"
@@ -36,14 +29,7 @@ const DashboardLayoutPage = ({ children }: DashboardLayoutPageProps) => {
                 <DashboardMain
                     children={children}
                 />
-                <RightSidebar
-                    open={rightOpen}
-                    className={
-                        isMobile
-                            ? "fixed top-0 right-0 h-full z-30 transition-all duration-300"
-                            : "flex-shrink-0 transition-all duration-300"
-                    }
-                />
+                <RightSidebar/>
             </div>
     )
 }
