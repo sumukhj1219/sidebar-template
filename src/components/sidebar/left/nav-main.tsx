@@ -1,6 +1,11 @@
+"use client"
 import { ChevronRight } from 'lucide-react';
-import { PiChartPie, PiShoppingBagOpen, PiFolder, PiBookOpen, PiUser } from "react-icons/pi";
-
+import { useState } from 'react';
+import { PiChartPie, PiShoppingBagOpen, PiFolder, PiBookOpen, PiUser, PiIdentificationCard, PiUsersThreeLight } from "react-icons/pi";
+import { motion, AnimatePresence } from "motion/react";
+import { CgWebsite } from "react-icons/cg";
+import { FiMessageCircle } from "react-icons/fi";
+import { useSidebar } from '../sidebar-context';
 
 const data = [
     {
@@ -66,51 +71,136 @@ const data = [
                         href: "#"
                     }
                 ]
+            },
+            {
+                name: "Account",
+                icon: PiIdentificationCard,
+                href: "#",
+                isCollapsible: true,
+                items: []
+            },
+            {
+                name: "Corporate",
+                icon: PiUsersThreeLight,
+                href: "#",
+                isCollapsible: true,
+                items: []
+            },
+            {
+                name: "Blog",
+                icon: CgWebsite,
+                href: "#",
+                isCollapsible: true,
+                items: []
+            },
+            {
+                name: "Social",
+                icon: FiMessageCircle,
+                href: "#",
+                isCollapsible: true,
+                items: []
             }
-        ]
+        ],
+
     }
 ]
 
+
 const NavMain = () => {
+    const [openItem, setOpenItem] = useState<string | null>(null);
+    const { leftOpen } = useSidebar();
+
+    const toggle = (name: string) => {
+        setOpenItem((prev) => (prev === name ? null : name));
+    };
+
     return (
-        <div className='flex flex-col gap-y-8'>
-            {
-                data.map((d) => (
-                    <div key={d.name}>
-                        <span className='text-sm text-muted-foreground'>{d.name}</span>
-                        {
-                            d.items.map((ds) => (
-                                <span
-                                    key={ds.name}
-                                    className="
-                                    relative flex gap-x-2 p-2 rounded-lg group
-                                    hover:bg-secondary cursor-pointer
-                                    "
+        <div className="flex flex-col gap-y-8">
+            {data.map((d) => (
+                <div key={d.name}>
+                    {leftOpen && (
+                        <span className="text-sm text-muted-foreground">{d.name}</span>
+                    )}
+
+                    {d.items.map((ds) => {
+                        const isOpen = openItem === ds.name;
+
+                        return (
+                            <div key={ds.name}>
+                                <div
+                                    onClick={() => ds.items.length > 0 && toggle(ds.name)}
+                                    className={`
+                                        relative flex gap-x-2 p-2 rounded-lg group
+                                        hover:bg-secondary cursor-pointer select-none
+                                        ${!leftOpen && "items-center justify-center mx-auto transition-all duration-300 p-2.5"}
+                                    `}
                                 >
-                                    <span
-                                        className="
-                                    absolute left-0 top-2.5 w-0 bg-primary
-                                    transition-all duration-300
-                                    group-hover:w-1 rounded-sm h-1/2
-                                    "
-                                    />
-                                    <span className='flex items-center gap-x-1 justify-center'>
-                                        {ds.isCollapsible ? (
-                                            <ChevronRight className="w-4 h-4 text-muted group-hover:text-secondary-foreground " />
-                                        ) : <span className='w-4 h-4' />}
+                                    {leftOpen && (
+                                        <span
+                                            className="
+                                            absolute left-0 top-2.5 w-0 bg-primary
+                                            transition-all duration-300
+                                            group-hover:w-1 rounded-sm h-1/2
+                                            "
+                                        />
+                                    )}
+
+                                    <span className="flex items-center gap-x-2">
+
+                                        {ds.isCollapsible && leftOpen ? (
+                                            
+                                            <motion.div
+                                                animate={{ rotate: isOpen ? 90 : 0 }}
+                                                transition={{ duration: 0.2 }}
+                                            >
+                                                <ChevronRight className="w-4 h-4 text-muted group-hover:text-secondary-foreground" />
+                                            </motion.div>
+                                        )
+                                        :
+                                        (leftOpen && <span className='w-4 h-4' />)
+                                    }
+
                                         <ds.icon className="w-5 h-5" />
-                                        {ds.name}
+
+                                        {leftOpen && ds.name}
                                     </span>
-                              
-                                </span>
+                                </div>
 
-                            ))
-                        }
-                    </div>
-                ))
-            }
+                                <AnimatePresence initial={false}>
+                                    {leftOpen && isOpen && ds.items.length > 0 && (
+                                        <motion.div
+                                            initial={{ height: 0, opacity: 0 }}
+                                            animate={{ height: "auto", opacity: 1 }}
+                                            exit={{ height: 0, opacity: 0 }}
+                                            transition={{ duration: 0.25, ease: "easeInOut" }}
+                                            className="overflow-hidden"
+                                        >
+                                            <div className="ml-8 mt-1 flex flex-col gap-y-1">
+                                                {ds.items.map((sub) => (
+                                                    <span
+                                                        key={sub.name}
+                                                        className="
+                                                            flex items-center gap-x-2 p-2 pl-3
+                                                            text-muted-foreground hover:text-foreground
+                                                            rounded-md cursor-pointer hover:bg-secondary
+                                                        "
+                                                    >
+                                                        {sub.name}
+                                                    </span>
+                                                ))}
+                                            </div>
+                                        </motion.div>
+                                    )}
+                                </AnimatePresence>
+                            </div>
+                        );
+                    })}
+                </div>
+            ))}
         </div>
-    )
-}
+    );
+};
 
-export default NavMain
+
+export default NavMain;
+

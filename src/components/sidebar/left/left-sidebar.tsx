@@ -3,6 +3,7 @@ import { Sidebar, SidebarContent, SidebarHeader } from "@/components/common/side
 import { cn } from "@/lib/utils"
 import UserProfile from "./user-profile"
 import NavMain from "./nav-main"
+import SubHeader from "./sub-header"
 
 interface LeftSidebarProps {
   open: boolean
@@ -18,7 +19,8 @@ export const LeftSidebar = ({ open, className }: LeftSidebarProps) => {
       <SidebarHeader>
         <UserProfile />
       </SidebarHeader>
-      <SidebarContent>
+      <SidebarContent className="flex flex-col md:gap-y-10">
+        <SubHeader />
         <NavMain />
       </SidebarContent>
     </Sidebar>
