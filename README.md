@@ -1,52 +1,67 @@
-Sidebar Template — Next.js 16 + shadcn/ui
+# Sidebar Template — Next.js 16 + shadcn/ui
 
-A clean, responsive, collapsible sidebar layout built using Next.js 16, shadcn/ui, and lucide-react.
-This template includes:
+A clean, responsive, collapsible sidebar layout built using **Next.js 16**, **shadcn/ui**, and **lucide-react**. Designed for scalability and performance using React Server Components (RSC).
 
-Left collapsible sidebar
+## 🚀 Features
 
-Right optional sidebar
+- **Next.js 16 App Router**: Fully compatible with the latest Next.js features.
+- **Shadcn/ui Components**: Beautiful, accessible components pre-configured.
+- **Dual Sidebar Layout**:
+  - **Left Sidebar**: Main navigation, collapsible.
+  - **Right Sidebar**: Optional panel for activities, notifications, or contacts.
+- **Responsive Design**: Mobile-first approach with collapsible navigation.
+- **RSC Compatible**: Optimized structure for Server Components.
+- **Lucide Icons**: Lightweight and consistent iconography.
 
-Dashboard layout structure
+---
 
-Responsive behavior
+## 📂 Project Structure
 
-shadcn/ui components
+A clean structure separating UI atoms from feature-specific logic.
 
-React Server Components (RSC)–compatible structure
-
-Features
-
-Fully Responsive Sidebar
-
-Collapsible Navigation
-
-Simple File Structure
-
-Lucide Icons Integration
-
-Easy to Customize
-
-Works with App Router (Next.js 16)
-
+```text
 src/
  ├─ app/
- │   └─ dashboard/
- │       ├─ layout.tsx        → Wraps the dashboard with sidebars
- │       └─ page.tsx          → Main dashboard content
+ │   └─ (dashboard)/
+ │       ├─ layout.tsx        # Wraps dashboard with sidebars
+ │       └─ page.tsx          # Main dashboard content
  │
  ├─ components/
- │   ├─ sidebar/
- │   │   ├─ left/
- │   │   │   ├─ left-sidebar.tsx
- │   │   │   ├─ nav-main.tsx
- │   │   │   └─ nav-projects.tsx
- │   │   ├─ right/
- │   │   │   └─ right-sidebar.tsx
- │   │   └─ user.tsx
- │   ├─ layout/
- │   │   └─ dashboard-main.tsx
- │   └─ ui/                   → shadcn components
+ │   ├─ layout/               # Layout specific components
+ │   │   ├─ app-sidebar.tsx   # Main Left Sidebar
+ │   │   └─ header.tsx        # Top Navigation
+ │   └─ ui/                   # Reusable shadcn/ui primitives
  │
+ ├─ features/                 # Feature-based modules
+ │   ├─ analytics/            # Charts and data visualization
+ │   └─ sidebar-content/      # Content for right sidebar (activities, etc.)
+ │
+ ├─ hooks/                    # Custom React hooks
  └─ lib/
-     └─ utils.ts
+     └─ utils.ts              # CN utilities
+
+```
+# Clone the repository
+git clone <https://github.com/sumukhj1219/sidebar-template>
+
+# Install dependencies
+npm install
+# or
+yarn install
+# or
+pnpm install
+
+# Run the development server
+npm run dev
+
+# Customizations
+```
+const items = [
+  {
+    title: "Dashboard",
+    url: "/dashboard",
+    icon: Home,
+  },
+  // Add new items here
+]
+```
