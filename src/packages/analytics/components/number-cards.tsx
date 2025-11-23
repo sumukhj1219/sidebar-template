@@ -1,14 +1,10 @@
 import {
     Card,
-    CardAction,
     CardContent,
-    CardDescription,
-    CardFooter,
     CardHeader,
     CardTitle,
 } from "@/components/ui/card"
 import { TrendingDown, TrendingUp } from "lucide-react"
-import React from 'react'
 
 const data = [
     {
@@ -55,27 +51,32 @@ const data = [
 
 const NumberCards = () => {
     return (
-        <div className='grid md:grid-cols-2 gap-y-3 gap-x-3'>
-            {
-                data.map((d) => (
-                    <Card key={d.id} className={`md:max-w-3xs gap-y-1 ${d.bg} ${d.text} shadow-none border-none`}>
-                        <CardHeader>
-                            <CardTitle className="text-sm">{d.name}</CardTitle>
-                        </CardHeader>
-                        <CardContent className="flex items-center gap-x-10">
-                            <p className="text-3xl">{d.total}</p>
-                            <span className="text-xs flex items-center gap-x-2">
-                                {d.growth}%
-                                {
-                                    d.status === "up" ? <TrendingUp className="w-4 h-4" /> : <TrendingDown className="w-4 h-4 rotate-y-180" />
-                                }
-                            </span>
-                        </CardContent>
-                    </Card>
-                ))
-            }
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {data.map((d) => (
+                <Card
+                    key={d.id}
+                    className={`w-full ${d.bg} ${d.text} shadow-none border-none`}
+                >
+                    <CardHeader>
+                        <CardTitle className="text-sm">{d.name}</CardTitle>
+                    </CardHeader>
+
+                    <CardContent className="flex items-center justify-between">
+                        <p className="text-4xl">{d.total}</p>
+                        <span className="text-xs flex items-center gap-x-2">
+                            {d.growth}%
+                            {d.status === "up" ? (
+                                <TrendingUp className="w-4 h-4" />
+                            ) : (
+                                <TrendingDown className="w-4 h-4 rotate-y-180" />
+                            )}
+                        </span>
+                    </CardContent>
+                </Card>
+            ))}
         </div>
     )
 }
+
 
 export default NumberCards

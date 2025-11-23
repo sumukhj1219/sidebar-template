@@ -1,11 +1,10 @@
 "use client";
 
-import { CartesianGrid, Line, LineChart, XAxis } from "recharts";
+import { CartesianGrid, Line, LineChart, XAxis, YAxis } from "recharts";
 
 import {
   Card,
   CardContent,
-  CardDescription,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -15,34 +14,35 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
-import { Badge } from "@/components/ui/badge";
-import { TrendingUp } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Separator } from "@/components/ui/separator";
 
 const chartData = [
-  { month: "January", desktop: 186, mobile: 87 },
-  { month: "February", desktop: 305, mobile: 163 },
-  { month: "March", desktop: 237, mobile: 142 },
-  { month: "April", desktop: 73, mobile: 195 },
-  { month: "May", desktop: 209, mobile: 118 },
-  { month: "June", desktop: 214, mobile: 231 },
+  { month: "January", actual: 12000000, projection: 15000000 },
+  { month: "February", actual: 18000000, projection: 20000000 },
+  { month: "March", actual: 22000000, projection: 23000000 },
+  { month: "April", actual: 26000000, projection: 25000000 },
+  { month: "May", actual: 15000000, projection: 17000000 },
+  { month: "June", actual: 29000000, projection: 30000000 },
 ];
 
+
+
 const chartConfig = {
-  desktop: {
-    label: "Desktop",
+  actual: {
+    label: "Actual Sales",
     color: "var(--chart-2)",
   },
-  mobile: {
-    label: "Mobile",
+  projection: {
+    label: "Projected Sales",
     color: "var(--chart-5)",
   },
 } satisfies ChartConfig;
 
-export function ChartLine({className}:{className?:string}) {
+
+export function ChartLine({ className }: { className?: string }) {
   return (
-    <Card className={cn(className, "border-none dark:bg-neutral-900/50")}>
+    <Card className={cn(className, "border-none dark:bg-neutral-800 bg-secondary shadow-none")}>
       <CardHeader className="flex items-center gap-x-5">
         <CardTitle>
           Revenue
@@ -69,26 +69,39 @@ export function ChartLine({className}:{className?:string}) {
               tickMargin={8}
               tickFormatter={(value) => value.slice(0, 3)}
             />
+            <YAxis
+              type="number"
+              domain={[0, 30000000]}
+              ticks={[0, 10000000, 20000000, 30000000]}
+              tickFormatter={(value) => `${value / 1000000}M`}
+              axisLine={false}
+              tickLine={false}
+              tick={{ fill: "#9CA3AF", fontSize: 12 }}
+            />
+
             <ChartTooltip
               cursor={false}
               content={<ChartTooltipContent hideLabel />}
             />
+
             <Line
-              dataKey="desktop"
+              dataKey="actual"
               type="bump"
               stroke="var(--chart-2)"
               dot={false}
               strokeWidth={2}
               filter="url(#rainbow-line-glow)"
             />
+
             <Line
-              dataKey="mobile"
+              dataKey="projection"
               type="bump"
               stroke="var(--chart-5)"
               dot={false}
               strokeWidth={2}
               filter="url(#rainbow-line-glow)"
             />
+
             <defs>
               <filter
                 id="rainbow-line-glow"

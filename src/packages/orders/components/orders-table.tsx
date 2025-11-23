@@ -23,12 +23,9 @@ import {
     IconChevronRight,
     IconChevronsLeft,
     IconChevronsRight,
-    IconCircleCheckFilled,
     IconDotsVertical,
     IconGripVertical,
     IconLayoutColumns,
-    IconLoader,
-    IconPlus,
 } from "@tabler/icons-react"
 import {
     ColumnDef,
@@ -43,10 +40,8 @@ import {
     useReactTable,
     VisibilityState,
 } from "@tanstack/react-table"
-import { toast } from "sonner"
 import { z } from "zod"
 
-import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
 import {
@@ -57,25 +52,21 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from "@/components/ui/select"
 import {
     Tabs,
     TabsContent,
-    TabsList,
-    TabsTrigger,
 } from "@/components/ui/tabs"
 import { schema } from "../types/orders-types"
 import OrdersTableList from "./orders-table-list"
 
-
+const statusRecorder: Record<string, string> = {
+    "Complete": "bg-green-500/10 text-green-600",
+    "Approved": "bg-yellow-500/10 text-yellow-600",
+    "Pending": "bg-gray-500/10 text-gray-600",
+    "Rejected": "bg-red-500/10 text-red-600",
+    "In Progress": "bg-teal-500/10 text-teal-600"
+}
 
 function DragHandle({ id }: { id: number }) {
     const { attributes, listeners } = useSortable({ id })
@@ -98,7 +89,7 @@ const columns: ColumnDef<z.infer<typeof schema>>[] = [
     {
         id: "drag",
         header: () => null,
-        cell: ({ row }) => <DragHandle id={row.original.orderId} />,
+        cell: ({ row }) => <DragHandle id={row.original.id} />,
         enableSorting: false,
         enableHiding: false,
     },
@@ -135,11 +126,24 @@ const columns: ColumnDef<z.infer<typeof schema>>[] = [
         header: "Order ID",
         cell: ({ row }) => row.original.orderId,
     },
-
     {
         accessorKey: "user",
         header: "User",
-        cell: ({ row }) => row.original.user,
+        cell: ({ row }) => {
+            const img = row.original.img
+            const name = row.original.user
+
+            return (
+                <div className="flex items-center gap-2">
+                    <img
+                        src={img}
+                        alt={name}
+                        className="w-6 h-6 rounded-full object-cover"
+                    />
+                    <span>{name}</span>
+                </div>
+            )
+        },
     },
 
     {
@@ -169,10 +173,7 @@ const columns: ColumnDef<z.infer<typeof schema>>[] = [
         header: "Status",
         cell: ({ row }) => (
             <span
-                className={`px-2 py-1 rounded text-xs ${row.original.status === "Done"
-                        ? "bg-green-500/10 text-green-600"
-                        : "bg-yellow-500/10 text-yellow-600"
-                    }`}
+                className={`px-2 py-1 rounded text-xs ${statusRecorder[row.original.status]}`}
             >
                 {row.original.status}
             </span>
@@ -278,34 +279,9 @@ export function OrdersTable({
             className="w-full flex-col justify-start gap-6"
         >
             <div className="flex items-center justify-between px-4 lg:px-6">
-                <Label htmlFor="view-selector" className="sr-only">
-                    View
+                <Label className="font-bold text-sm">
+                    Order List
                 </Label>
-                <Select defaultValue="outline">
-                    <SelectTrigger
-                        className="flex w-fit @4xl/main:hidden"
-                        size="sm"
-                        id="view-selector"
-                    >
-                        <SelectValue placeholder="Select a view" />
-                    </SelectTrigger>
-                    <SelectContent>
-                        <SelectItem value="outline">Outline</SelectItem>
-                        <SelectItem value="past-performance">Past Performance</SelectItem>
-                        <SelectItem value="key-personnel">Key Personnel</SelectItem>
-                        <SelectItem value="focus-documents">Focus Documents</SelectItem>
-                    </SelectContent>
-                </Select>
-                <TabsList className="**:data-[slot=badge]:bg-muted-foreground/30 hidden **:data-[slot=badge]:size-5 **:data-[slot=badge]:rounded-full **:data-[slot=badge]:px-1 @4xl/main:flex">
-                    <TabsTrigger value="outline">Outline</TabsTrigger>
-                    <TabsTrigger value="past-performance">
-                        Past Performance <Badge variant="secondary">3</Badge>
-                    </TabsTrigger>
-                    <TabsTrigger value="key-personnel">
-                        Key Personnel <Badge variant="secondary">2</Badge>
-                    </TabsTrigger>
-                    <TabsTrigger value="focus-documents">Focus Documents</TabsTrigger>
-                </TabsList>
                 <div className="flex items-center gap-2">
                     <DropdownMenu>
                         <DropdownMenuTrigger asChild>
@@ -340,10 +316,6 @@ export function OrdersTable({
                                 })}
                         </DropdownMenuContent>
                     </DropdownMenu>
-                    <Button variant="outline" size="sm">
-                        <IconPlus />
-                        <span className="hidden lg:inline">Add Section</span>
-                    </Button>
                 </div>
             </div>
             <TabsContent
@@ -371,30 +343,6 @@ export function OrdersTable({
                         {table.getFilteredRowModel().rows.length} row(s) selected.
                     </div>
                     <div className="flex w-full items-center gap-8 lg:w-fit">
-                        <div className="hidden items-center gap-2 lg:flex">
-                            <Label htmlFor="rows-per-page" className="text-sm font-medium">
-                                Rows per page
-                            </Label>
-                            <Select
-                                value={`${table.getState().pagination.pageSize}`}
-                                onValueChange={(value) => {
-                                    table.setPageSize(Number(value))
-                                }}
-                            >
-                                <SelectTrigger size="sm" className="w-20" id="rows-per-page">
-                                    <SelectValue
-                                        placeholder={table.getState().pagination.pageSize}
-                                    />
-                                </SelectTrigger>
-                                <SelectContent side="top">
-                                    {[10, 20, 30, 40, 50].map((pageSize) => (
-                                        <SelectItem key={pageSize} value={`${pageSize}`}>
-                                            {pageSize}
-                                        </SelectItem>
-                                    ))}
-                                </SelectContent>
-                            </Select>
-                        </div>
                         <div className="flex w-fit items-center justify-center text-sm font-medium">
                             Page {table.getState().pagination.pageIndex + 1} of{" "}
                             {table.getPageCount()}
@@ -442,21 +390,6 @@ export function OrdersTable({
                         </div>
                     </div>
                 </div>
-            </TabsContent>
-            <TabsContent
-                value="past-performance"
-                className="flex flex-col px-4 lg:px-6"
-            >
-                <div className="aspect-video w-full flex-1 rounded-lg border border-dashed"></div>
-            </TabsContent>
-            <TabsContent value="key-personnel" className="flex flex-col px-4 lg:px-6">
-                <div className="aspect-video w-full flex-1 rounded-lg border border-dashed"></div>
-            </TabsContent>
-            <TabsContent
-                value="focus-documents"
-                className="flex flex-col px-4 lg:px-6"
-            >
-                <div className="aspect-video w-full flex-1 rounded-lg border border-dashed"></div>
             </TabsContent>
         </Tabs>
     )

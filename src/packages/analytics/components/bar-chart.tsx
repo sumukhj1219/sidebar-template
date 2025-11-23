@@ -23,37 +23,70 @@ import {
 export const description = "A stacked bar chart with a legend"
 
 const chartData = [
-   { sales: 10000000, month: "February", desktop: 305, mobile: 200 },
-
-]
-
+    {
+        month: "January",
+        sales: 10000000,
+        projected: 6000000,
+        actual: 4000000,
+    },
+    {
+        month: "February",
+        sales: 20000000,
+        projected: 12000000,
+        actual: 8000000,
+    },
+    {
+        month: "March",
+        sales: 30000000,
+        projected: 20000000,
+        actual: 10000000,
+    },
+    {
+        month: "April",
+        sales: 25000000,
+        projected: 15000000,
+        actual: 10000000,
+    },
+    {
+        month: "May",
+        sales: 35000000,
+        projected: 20000000,
+        actual: 15000000,
+    },
+    {
+        month: "June",
+        sales: 28000000,
+        projected: 18000000,
+        actual: 10000000,
+    },
+];
 
 const chartConfig = {
-    desktop: {
-        label: "Desktop",
+    projected: {
+        label: "Projected",
         color: "var(--chart-1)",
     },
-    mobile: {
-        label: "Mobile",
+    actual: {
+        label: "Actual",
         color: "var(--chart-2)",
     },
-} satisfies ChartConfig
+} satisfies ChartConfig;
+
 
 export function ChartBar() {
     return (
-        <Card className="shadow-none border-none">
+        <Card className="shadow-none border-none dark:bg-neutral-800 bg-secondary">
             <CardHeader>
                 <CardTitle>Projections vs Actual</CardTitle>
             </CardHeader>
             <CardContent>
                 <ChartContainer config={chartConfig}>
                     <BarChart data={chartData}>
-                        <CartesianGrid vertical={false} stroke="#E5E7EB" />
                         <XAxis
                             dataKey="month"
                             tickLine={false}
                             axisLine={false}
-                            tickMargin={10}
+                            tickMargin={5}
                             tickFormatter={(v) => v.slice(0, 3)}
                         />
                         <YAxis
@@ -68,15 +101,15 @@ export function ChartBar() {
                         <ChartTooltip content={<ChartTooltipContent hideLabel />} />
                         <ChartLegend content={<ChartLegendContent />} />
                         <Bar
-                            dataKey="desktop"
+                            dataKey="projected"
                             stackId="a"
-                            fill="var(--color-desktop)"
+                            fill="var(--color-projected)"
                             radius={[0, 0, 4, 4]}
                         />
                         <Bar
-                            dataKey="mobile"
+                            dataKey="actual"
                             stackId="a"
-                            fill="var(--color-mobile)"
+                            fill="var(--color-actual)"
                             radius={[4, 4, 0, 0]}
                         />
                     </BarChart>
