@@ -40,6 +40,8 @@ src/
  └─ lib/
      └─ utils.ts              # CN utilities
 
+Navigate to /orders to preview the order table
+
 ```
 # Clone the repository
 git clone <https://github.com/sumukhj1219/sidebar-template>
