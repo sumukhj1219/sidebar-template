@@ -1,37 +1,52 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+Sidebar Template — Next.js 16 + shadcn/ui
 
-## Getting Started
+A clean, responsive, collapsible sidebar layout built using Next.js 16, shadcn/ui, and lucide-react.
+This template includes:
 
-First, run the development server:
+Left collapsible sidebar
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+Right optional sidebar
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Dashboard layout structure
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Responsive behavior
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+shadcn/ui components
 
-## Learn More
+React Server Components (RSC)–compatible structure
 
-To learn more about Next.js, take a look at the following resources:
+Features
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Fully Responsive Sidebar
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Collapsible Navigation
 
-## Deploy on Vercel
+Simple File Structure
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Lucide Icons Integration
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
-# juspay-assignment
+Easy to Customize
+
+Works with App Router (Next.js 16)
+
+src/
+ ├─ app/
+ │   └─ dashboard/
+ │       ├─ layout.tsx        → Wraps the dashboard with sidebars
+ │       └─ page.tsx          → Main dashboard content
+ │
+ ├─ components/
+ │   ├─ sidebar/
+ │   │   ├─ left/
+ │   │   │   ├─ left-sidebar.tsx
+ │   │   │   ├─ nav-main.tsx
+ │   │   │   └─ nav-projects.tsx
+ │   │   ├─ right/
+ │   │   │   └─ right-sidebar.tsx
+ │   │   └─ user.tsx
+ │   ├─ layout/
+ │   │   └─ dashboard-main.tsx
+ │   └─ ui/                   → shadcn components
+ │
+ └─ lib/
+     └─ utils.ts
