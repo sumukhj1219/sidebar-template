@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from "motion/react";
 import { CgWebsite } from "react-icons/cg";
 import { FiMessageCircle } from "react-icons/fi";
 import { useSidebar } from '../sidebar-context';
+import Link from 'next/link';
 
 const data = [
     {
@@ -23,7 +24,12 @@ const data = [
                 icon: PiShoppingBagOpen,
                 href: "#",
                 isCollapsible: true,
-                items: []
+                items: [
+                    {
+                        name:"Orders",
+                        href:"/orders"
+                    }
+                ]
             },
             {
                 name: "Projects",
@@ -138,14 +144,14 @@ const NavMain = () => {
                                     {leftOpen && (
                                         <span
                                             className="
-                                            absolute left-0 top-2.5 w-0 bg-primary
+                                            absolute left-0 top-2 w-0 bg-primary
                                             transition-all duration-300
                                             group-hover:w-1 rounded-sm h-1/2
                                             "
                                         />
                                     )}
 
-                                    <span className="flex items-center gap-x-2">
+                                    <span className="flex items-center text-sm gap-x-2">
 
                                         {ds.isCollapsible && leftOpen ? (
                                             
@@ -153,7 +159,7 @@ const NavMain = () => {
                                                 animate={{ rotate: isOpen ? 90 : 0 }}
                                                 transition={{ duration: 0.2 }}
                                             >
-                                                <ChevronRight className="w-4 h-4 text-muted group-hover:text-secondary-foreground" />
+                                                <ChevronRight className="w-4 h-4 text-sm text-muted group-hover:text-secondary-foreground" />
                                             </motion.div>
                                         )
                                         :
@@ -177,16 +183,17 @@ const NavMain = () => {
                                         >
                                             <div className="ml-8 mt-1 flex flex-col gap-y-1">
                                                 {ds.items.map((sub) => (
-                                                    <span
+                                                    <Link
+                                                    href={sub.href}
                                                         key={sub.name}
                                                         className="
                                                             flex items-center gap-x-2 p-2 pl-3
                                                             text-muted-foreground hover:text-foreground
-                                                            rounded-md cursor-pointer hover:bg-secondary
+                                                            rounded-md text-sm cursor-pointer hover:bg-secondary
                                                         "
                                                     >
                                                         {sub.name}
-                                                    </span>
+                                                    </Link>
                                                 ))}
                                             </div>
                                         </motion.div>
