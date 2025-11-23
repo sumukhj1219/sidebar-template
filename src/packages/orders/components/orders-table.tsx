@@ -29,7 +29,6 @@ import {
     IconLayoutColumns,
     IconLoader,
     IconPlus,
-    IconTrendingUp,
 } from "@tabler/icons-react"
 import {
     ColumnDef,
@@ -44,29 +43,12 @@ import {
     useReactTable,
     VisibilityState,
 } from "@tanstack/react-table"
-import { Area, AreaChart, CartesianGrid, XAxis } from "recharts"
 import { toast } from "sonner"
 import { z } from "zod"
 
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import {
-    ChartConfig,
-    ChartContainer,
-    ChartTooltip,
-    ChartTooltipContent,
-} from "@/components/ui/chart"
 import { Checkbox } from "@/components/ui/checkbox"
-import {
-    Drawer,
-    DrawerClose,
-    DrawerContent,
-    DrawerDescription,
-    DrawerFooter,
-    DrawerHeader,
-    DrawerTitle,
-    DrawerTrigger,
-} from "@/components/ui/drawer"
 import {
     DropdownMenu,
     DropdownMenuCheckboxItem,
@@ -84,24 +66,19 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select"
-import { Separator } from "@/components/ui/separator"
 import {
     Tabs,
     TabsContent,
     TabsList,
     TabsTrigger,
 } from "@/components/ui/tabs"
-import { useDevice } from "@/hooks/use-device"
 import { schema } from "../types/orders-types"
 import OrdersTableList from "./orders-table-list"
 
 
 
-// Create a separate component for the drag handle
 function DragHandle({ id }: { id: number }) {
-    const { attributes, listeners } = useSortable({
-        id,
-    })
+    const { attributes, listeners } = useSortable({ id })
 
     return (
         <Button
@@ -111,8 +88,8 @@ function DragHandle({ id }: { id: number }) {
             size="icon"
             className="text-muted-foreground size-7 hover:bg-transparent"
         >
-            <IconGripVertical className="text-muted-foreground size-3" />
-            <span className="sr-only">Drag to reorder</span>
+            <IconGripVertical className="size-3 text-muted-foreground" />
+            <span className="sr-only">Drag</span>
         </Button>
     )
 }
@@ -121,8 +98,11 @@ const columns: ColumnDef<z.infer<typeof schema>>[] = [
     {
         id: "drag",
         header: () => null,
-        cell: ({ row }) => <DragHandle id={row.original.id} />,
+        cell: ({ row }) => <DragHandle id={row.original.orderId} />,
+        enableSorting: false,
+        enableHiding: false,
     },
+
     {
         id: "select",
         header: ({ table }) => (
@@ -149,115 +129,56 @@ const columns: ColumnDef<z.infer<typeof schema>>[] = [
         enableSorting: false,
         enableHiding: false,
     },
+
     {
-        accessorKey: "type",
-        header: "Section Type",
+        accessorKey: "orderId",
+        header: "Order ID",
+        cell: ({ row }) => row.original.orderId,
+    },
+
+    {
+        accessorKey: "user",
+        header: "User",
+        cell: ({ row }) => row.original.user,
+    },
+
+    {
+        accessorKey: "project",
+        header: "Project",
+        cell: ({ row }) => row.original.project,
+    },
+
+    {
+        accessorKey: "address",
+        header: "Address",
         cell: ({ row }) => (
-            <div className="w-32">
-                <Badge variant="outline" className="text-muted-foreground px-1.5">
-                    {row.original.type}
-                </Badge>
-            </div>
+            <span className="block max-w-[180px] truncate">
+                {row.original.address}
+            </span>
         ),
     },
+
+    {
+        accessorKey: "date",
+        header: "Date",
+        cell: ({ row }) => row.original.date,
+    },
+
     {
         accessorKey: "status",
         header: "Status",
         cell: ({ row }) => (
-            <Badge variant="outline" className="text-muted-foreground px-1.5">
-                {row.original.status === "Done" ? (
-                    <IconCircleCheckFilled className="fill-green-500 dark:fill-green-400" />
-                ) : (
-                    <IconLoader />
-                )}
+            <span
+                className={`px-2 py-1 rounded text-xs ${row.original.status === "Done"
+                        ? "bg-green-500/10 text-green-600"
+                        : "bg-yellow-500/10 text-yellow-600"
+                    }`}
+            >
                 {row.original.status}
-            </Badge>
+            </span>
         ),
     },
-    {
-        accessorKey: "target",
-        header: () => <div className="w-full text-right">Target</div>,
-        cell: ({ row }) => (
-            <form
-                onSubmit={(e) => {
-                    e.preventDefault()
-                    toast.promise(new Promise((resolve) => setTimeout(resolve, 1000)), {
-                        loading: `Saving ${row.original.header}`,
-                        success: "Done",
-                        error: "Error",
-                    })
-                }}
-            >
-                <Label htmlFor={`${row.original.id}-target`} className="sr-only">
-                    Target
-                </Label>
-                <Input
-                    className="hover:bg-input/30 focus-visible:bg-background dark:hover:bg-input/30 dark:focus-visible:bg-input/30 h-8 w-16 border-transparent bg-transparent text-right shadow-none focus-visible:border dark:bg-transparent"
-                    defaultValue={row.original.target}
-                    id={`${row.original.id}-target`}
-                />
-            </form>
-        ),
-    },
-    {
-        accessorKey: "limit",
-        header: () => <div className="w-full text-right">Limit</div>,
-        cell: ({ row }) => (
-            <form
-                onSubmit={(e) => {
-                    e.preventDefault()
-                    toast.promise(new Promise((resolve) => setTimeout(resolve, 1000)), {
-                        loading: `Saving ${row.original.header}`,
-                        success: "Done",
-                        error: "Error",
-                    })
-                }}
-            >
-                <Label htmlFor={`${row.original.id}-limit`} className="sr-only">
-                    Limit
-                </Label>
-                <Input
-                    className="hover:bg-input/30 focus-visible:bg-background dark:hover:bg-input/30 dark:focus-visible:bg-input/30 h-8 w-16 border-transparent bg-transparent text-right shadow-none focus-visible:border dark:bg-transparent"
-                    defaultValue={row.original.limit}
-                    id={`${row.original.id}-limit`}
-                />
-            </form>
-        ),
-    },
-    {
-        accessorKey: "reviewer",
-        header: "Reviewer",
-        cell: ({ row }) => {
-            const isAssigned = row.original.reviewer !== "Assign reviewer"
 
-            if (isAssigned) {
-                return row.original.reviewer
-            }
-
-            return (
-                <>
-                    <Label htmlFor={`${row.original.id}-reviewer`} className="sr-only">
-                        Reviewer
-                    </Label>
-                    <Select>
-                        <SelectTrigger
-                            className="w-38 **:data-[slot=select-value]:block **:data-[slot=select-value]:truncate"
-                            size="sm"
-                            id={`${row.original.id}-reviewer`}
-                        >
-                            <SelectValue placeholder="Assign reviewer" />
-                        </SelectTrigger>
-                        <SelectContent align="end">
-                            <SelectItem value="Eddie Lake">Eddie Lake</SelectItem>
-                            <SelectItem value="Jamik Tashpulatov">
-                                Jamik Tashpulatov
-                            </SelectItem>
-                        </SelectContent>
-                    </Select>
-                </>
-            )
-        },
-    },
     {
         id: "actions",
         cell: () => (
@@ -265,16 +186,16 @@ const columns: ColumnDef<z.infer<typeof schema>>[] = [
                 <DropdownMenuTrigger asChild>
                     <Button
                         variant="ghost"
-                        className="data-[state=open]:bg-muted text-muted-foreground flex size-8"
                         size="icon"
+                        className="size-8 text-muted-foreground data-[state=open]:bg-muted"
                     >
                         <IconDotsVertical />
-                        <span className="sr-only">Open menu</span>
                     </Button>
                 </DropdownMenuTrigger>
+
                 <DropdownMenuContent align="end" className="w-32">
                     <DropdownMenuItem>Edit</DropdownMenuItem>
-                    <DropdownMenuItem>Make a copy</DropdownMenuItem>
+                    <DropdownMenuItem>Copy</DropdownMenuItem>
                     <DropdownMenuItem>Favorite</DropdownMenuItem>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem variant="destructive">Delete</DropdownMenuItem>
@@ -311,7 +232,7 @@ export function OrdersTable({
     )
 
     const dataIds = React.useMemo<UniqueIdentifier[]>(
-        () => data?.map(({ id }) => id) || [],
+        () => data?.map(({ orderId }) => orderId) || [],
         [data]
     )
 
@@ -325,7 +246,7 @@ export function OrdersTable({
             columnFilters,
             pagination,
         },
-        getRowId: (row) => row.id.toString(),
+        getRowId: (row) => row.orderId.toString(),
         enableRowSelection: true,
         onRowSelectionChange: setRowSelection,
         onSortingChange: setSorting,
@@ -438,7 +359,7 @@ export function OrdersTable({
                         id={sortableId}
                     >
                         <OrdersTableList
-                            table={table} 
+                            table={table}
                             dataIds={dataIds}
                             columns={columns}
                         />

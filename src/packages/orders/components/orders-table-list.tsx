@@ -22,7 +22,7 @@ interface OrdersTableListProps {
 
 function DraggableRow({ row }: { row: Row<z.infer<typeof schema>> }) {
     const { transform, transition, setNodeRef, isDragging } = useSortable({
-        id: row.original.id,
+        id: row.original.orderId,
     })
 
     return (
