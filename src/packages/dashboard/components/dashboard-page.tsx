@@ -6,21 +6,23 @@ import RevenueByLocation from "@/packages/analytics/components/revenue-by-locati
 import TopSellingProducts from "@/packages/analytics/components/top-selling-products"
 import { ChartPie } from "@/packages/analytics/components/pie-chart"
 
-
 const DashboardPage = () => {
     return (
         <>
-            <Container className="grid md:grid-cols-2 gap-6">
-                <NumberCards />
-                <ChartBar />
+            <Container className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <NumberCards className="w-full" />
+                <ChartBar className="w-full" />
             </Container>
-            <Container className="grid md:grid-cols-6 gap-6 mt-8">
-                <ChartLine className="col-span-4 w-full" />
-                <RevenueByLocation className="col-span-2" />
+
+
+            <Container className="grid grid-cols-1 md:grid-cols-6 gap-6 mt-8">
+                <ChartLine className="col-span-1 md:col-span-4 w-full" />
+                <RevenueByLocation className="col-span-1 md:col-span-2 w-full" />
             </Container>
-            <Container className="grid md:grid-cols-6 gap-6 mt-8">
-                <TopSellingProducts className="col-span-4" />
-                <ChartPie className="col-span-2" />
+
+            <Container className="grid grid-cols-1 md:grid-cols-6 gap-6 mt-8">
+                <TopSellingProducts className="col-span-1 md:col-span-4 w-full" />
+                <ChartPie className="col-span-1 md:col-span-2 w-full" />
             </Container>
         </>
     )
