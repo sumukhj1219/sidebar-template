@@ -1,3 +1,4 @@
+import Container from '@/components/common/container';
 import { OrdersTable } from './orders-table'
 
 const data = [
@@ -58,7 +59,9 @@ const data = [
 
 const OrdersPage = () => {
     return (
+      <Container className='flex flex-1'>
         <OrdersTable data={data} />
+      </Container>
     )
 }
 
